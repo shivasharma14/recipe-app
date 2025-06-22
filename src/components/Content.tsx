@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import IngredientsList from "./IngredientsList";
 import { getRecipeFromMistral } from "../ai";
 import ClaudeRecipe from "./ClaudeRecipe";
@@ -6,6 +6,13 @@ import ClaudeRecipe from "./ClaudeRecipe";
 export default function Content() {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [recipe, setRecipe] = useState<string>("");
+
+  const recipeSection = useRef<HTMLElement | null>(null); //to reference a particluar DOM node
+
+  useEffect(() => {
+    if (recipe != "" && recipeSection.current != null)
+      recipeSection.current.scrollIntoView({ behavior: "smooth" });
+  }, [recipe]);
 
   async function getRecipe() {
     const recipeMarkdown = (await getRecipeFromMistral(ingredients)) as string;
@@ -45,7 +52,11 @@ export default function Content() {
         <button>Add ingredient</button>
       </form>
       {ingredients.length > 0 && (
-        <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />
+        <IngredientsList
+          ingredients={ingredients}
+          getRecipe={getRecipe}
+          ref={recipeSection}
+        />
       )}
 
       {recipe && <ClaudeRecipe recipe={recipe} />}
