@@ -1,7 +1,7 @@
 import { useState } from "react";
-import IngredientsList from "./components/IngredientsList";
-import { getRecipeFromMistral } from "./ai";
-import ClaudeRecipe from "./components/ClaudeRecipe";
+import IngredientsList from "./IngredientsList";
+import { getRecipeFromMistral } from "../ai";
+import ClaudeRecipe from "./ClaudeRecipe";
 
 export default function Content() {
   const [ingredients, setIngredients] = useState<string[]>([]);
@@ -48,7 +48,7 @@ export default function Content() {
         <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />
       )}
 
-      {recipe && <ClaudeRecipe recipe={recipe}/>}
+      {recipe && <ClaudeRecipe recipe={recipe} />}
     </main>
   );
 }
